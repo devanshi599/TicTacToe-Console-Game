@@ -1,38 +1,49 @@
-public class TicTacToe {
+import java.util.Random;
 
-    // 3x3 Character Array to represent the board
+public class TicTacToe {
     static char[][] board = new char[3][3];
+    static char playerSymbol;
+    static char computerSymbol;
 
     public static void main(String[] args) {
-        System.out.println("--- Welcome to Tic-Tac-Toe ---");
         initializeBoard();
         printBoard();
+        
+        // UC2: Perform the toss
+        toss();
     }
 
-    /**
-     * UC1: Initialization Logic
-     * Fills the 3x3 board with '-' to indicate empty cells.
-     */
     static void initializeBoard() {
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                board[row][col] = '-';
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                board[i][j] = '-';
             }
         }
     }
 
-    /**
-     * UC1: Console Output Formatting
-     * Prints the board using nested loops for a readable format.
-     */
     static void printBoard() {
-        System.out.println("Current Board Layout:");
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                System.out.print(board[row][col] + " ");
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                System.out.print(board[i][j] + " ");
             }
-            // Move to the next line after printing all columns in a row
             System.out.println();
         }
+    }
+
+    // New logic for UC2: The Toss
+    static void toss() {
+        Random rand = new Random();
+        int result = rand.nextInt(2); // Generates 0 or 1
+
+        if (result == 0) {
+            System.out.println("Toss Result: User starts first!");
+            playerSymbol = 'X';
+            computerSymbol = 'O';
+        } else {
+            System.out.println("Toss Result: Computer starts first!");
+            playerSymbol = 'O';
+            computerSymbol = 'X';
+        }
+        System.out.println("Your symbol is: " + playerSymbol);
     }
 }
