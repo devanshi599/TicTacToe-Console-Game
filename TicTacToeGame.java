@@ -22,22 +22,25 @@ uc5-validate-move
         }
     }
 
-    // UC5 Validate Move
+    // Validate move
     static boolean validateMove(int row, int col) {
 
-        // Check bounds
         if (row < 0 || row > 2 || col < 0 || col > 2) {
-            System.out.println("Invalid Move: Row and Column must be between 0 and 2.");
+            System.out.println("Invalid Move: Enter values 0 to 2 only.");
             return false;
         }
 
-        // Check empty cell
         if (board[row][col] != ' ') {
             System.out.println("Invalid Move: Cell already occupied.");
             return false;
         }
 
         return true;
+    }
+
+    // UC6 Place Move on Board
+    static void placeMove(int row, int col, char symbol) {
+        board[row][col] = symbol;
     }
 
     public static void main(String[] args) {
@@ -52,9 +55,11 @@ uc5-validate-move
         System.out.print("Enter Column (0-2): ");
         int col = sc.nextInt();
 
+        char playerSymbol = 'X';
+
         if (validateMove(row, col)) {
-            board[row][col] = 'X';
-            System.out.println("Move Accepted!");
+            placeMove(row, col, playerSymbol);
+            System.out.println("Move Placed Successfully!");
         } else {
             System.out.println("Move Rejected!");
         }
