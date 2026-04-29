@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Scanner;
 
 public class TicTacToeGame {
 
@@ -8,9 +9,10 @@ public class TicTacToeGame {
             {' ', ' ', ' '}
     };
 
+    static Scanner sc = new Scanner(System.in);
     static Random random = new Random();
 
-    // Display board
+    // Display Board
     static void displayBoard() {
         System.out.println("-------------");
         for (int i = 0; i < 3; i++) {
@@ -25,15 +27,10 @@ public class TicTacToeGame {
 
     // Validate move
     static boolean validateMove(int row, int col) {
-        if (row < 0 || row > 2 || col < 0 || col > 2) {
+        if (row < 0 || row > 2 || col < 0 || col > 2)
             return false;
-        }
 
-        if (board[row][col] != ' ') {
-            return false;
-        }
-
-        return true;
+        return board[row][col] == ' ';
     }
 
     // Place move
@@ -41,15 +38,32 @@ public class TicTacToeGame {
         board[row][col] = symbol;
     }
 
-    // UC7 Computer Random Move
-    static void computerMove() {
-
-        int slot;
+    // Player move
+    static void playerMove() {
         int row, col;
 
         while (true) {
+            System.out.print("Enter Row (0-2): ");
+            row = sc.nextInt();
 
-            slot = random.nextInt(9) + 1;   // 1 to 9
+            System.out.print("Enter Column (0-2): ");
+            col = sc.nextInt();
+
+            if (validateMove(row, col)) {
+                placeMove(row, col, 'X');
+                break;
+            } else {
+                System.out.println("Invalid move. Try again.");
+            }
+        }
+    }
+
+    // Computer move
+    static void computerMove() {
+        int slot, row, col;
+
+        while (true) {
+            slot = random.nextInt(9) + 1;
 
             row = (slot - 1) / 3;
             col = (slot - 1) % 3;
@@ -62,15 +76,80 @@ public class TicTacToeGame {
         }
     }
 
+    // Check winner
+    static boolean checkWinner(char symbol) {
+
+        for (int i = 0; i < 3; i++) {
+            if (board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol)
+                return true;
+
+            if (board[0][i] == symbol && board[1][i] == symbol && board[2][i] == symbol)
+                return true;
+        }
+
+        if (board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol)
+            return true;
+
+        if (board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol)
+            return true;
+
+        return false;
+    }
+
+    // Check draw
+    static boolean checkDraw() {
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                if (board[i][j] == ' ')
+                    return false;
+
+        return true;
+    }
+
     public static void main(String[] args) {
 
-        System.out.println("Initial Board:");
-        displayBoard();
+        boolean gameOver = false;
+        char currentTurn = 'X';
 
-        System.out.println("Computer Turn...");
-        computerMove();
+        System.out.println("Tic Tac Toe Started!");
 
-        System.out.println("Updated Board:");
-        displayBoard();
+        while (!gameOver) {
+
+            displayBoard();
+
+            if (currentTurn == 'X') {
+                System.out.println("Player Turn");
+                playerMove();
+
+                if (checkWinner('X')) {
+                    displayBoard();
+                    System.out.println("Player Wins!");
+                    gameOver = true;
+                } else {
+                    currentTurn = 'O';
+                }
+
+            } else {
+
+                System.out.println("Computer Turn");
+                computerMove();
+
+                if (checkWinner('O')) {
+                    displayBoard();
+                    System.out.println("Computer Wins!");
+                    gameOver = true;
+                } else {
+                    currentTurn = 'X';
+                }
+            }
+
+            if (!gameOver && checkDraw()) {
+                displayBoard();
+                System.out.println("Match Draw!");
+                gameOver = true;
+            }
+        }
+
+        sc.close();
     }
 }
