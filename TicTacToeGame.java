@@ -27,10 +27,9 @@ public class TicTacToeGame {
 
     // Validate move
     static boolean validateMove(int row, int col) {
-        if (row < 0 || row > 2 || col < 0 || col > 2)
-            return false;
-
-        return board[row][col] == ' ';
+        return row >= 0 && row <= 2 &&
+               col >= 0 && col <= 2 &&
+               board[row][col] == ' ';
     }
 
     // Place move
@@ -53,7 +52,7 @@ public class TicTacToeGame {
                 placeMove(row, col, 'X');
                 break;
             } else {
-                System.out.println("Invalid move. Try again.");
+                System.out.println("Invalid Move! Try again.");
             }
         }
     }
@@ -76,21 +75,34 @@ public class TicTacToeGame {
         }
     }
 
-    // Check winner
+    // UC9 Check Winning Condition
     static boolean checkWinner(char symbol) {
 
+        // Check rows
         for (int i = 0; i < 3; i++) {
-            if (board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol)
-                return true;
-
-            if (board[0][i] == symbol && board[1][i] == symbol && board[2][i] == symbol)
+            if (board[i][0] == symbol &&
+                board[i][1] == symbol &&
+                board[i][2] == symbol)
                 return true;
         }
 
-        if (board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol)
+        // Check columns
+        for (int i = 0; i < 3; i++) {
+            if (board[0][i] == symbol &&
+                board[1][i] == symbol &&
+                board[2][i] == symbol)
+                return true;
+        }
+
+        // Check diagonals
+        if (board[0][0] == symbol &&
+            board[1][1] == symbol &&
+            board[2][2] == symbol)
             return true;
 
-        if (board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol)
+        if (board[0][2] == symbol &&
+            board[1][1] == symbol &&
+            board[2][0] == symbol)
             return true;
 
         return false;
@@ -109,15 +121,13 @@ public class TicTacToeGame {
     public static void main(String[] args) {
 
         boolean gameOver = false;
-        char currentTurn = 'X';
-
-        System.out.println("Tic Tac Toe Started!");
+        char turn = 'X';
 
         while (!gameOver) {
 
             displayBoard();
 
-            if (currentTurn == 'X') {
+            if (turn == 'X') {
                 System.out.println("Player Turn");
                 playerMove();
 
@@ -126,7 +136,7 @@ public class TicTacToeGame {
                     System.out.println("Player Wins!");
                     gameOver = true;
                 } else {
-                    currentTurn = 'O';
+                    turn = 'O';
                 }
 
             } else {
@@ -139,7 +149,7 @@ public class TicTacToeGame {
                     System.out.println("Computer Wins!");
                     gameOver = true;
                 } else {
-                    currentTurn = 'X';
+                    turn = 'X';
                 }
             }
 
