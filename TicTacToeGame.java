@@ -52,7 +52,7 @@ public class TicTacToeGame {
                 placeMove(row, col, 'X');
                 break;
             } else {
-                System.out.println("Invalid Move! Try again.");
+                System.out.println("Invalid move! Try again.");
             }
         }
     }
@@ -75,26 +75,21 @@ public class TicTacToeGame {
         }
     }
 
-    // UC9 Check Winning Condition
+    // Check winner
     static boolean checkWinner(char symbol) {
 
-        // Check rows
         for (int i = 0; i < 3; i++) {
             if (board[i][0] == symbol &&
                 board[i][1] == symbol &&
                 board[i][2] == symbol)
                 return true;
-        }
 
-        // Check columns
-        for (int i = 0; i < 3; i++) {
             if (board[0][i] == symbol &&
                 board[1][i] == symbol &&
                 board[2][i] == symbol)
                 return true;
         }
 
-        // Check diagonals
         if (board[0][0] == symbol &&
             board[1][1] == symbol &&
             board[2][2] == symbol)
@@ -108,14 +103,27 @@ public class TicTacToeGame {
         return false;
     }
 
-    // Check draw
+    // UC10 Detect Draw Condition
     static boolean checkDraw() {
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-                if (board[i][j] == ' ')
-                    return false;
 
-        return true;
+        boolean boardFull = true;
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+
+                if (board[i][j] == ' ') {
+                    boardFull = false;
+                }
+            }
+        }
+
+        if (boardFull &&
+            !checkWinner('X') &&
+            !checkWinner('O')) {
+            return true;
+        }
+
+        return false;
     }
 
     public static void main(String[] args) {
@@ -123,11 +131,14 @@ public class TicTacToeGame {
         boolean gameOver = false;
         char turn = 'X';
 
+        System.out.println("Tic Tac Toe Started!");
+
         while (!gameOver) {
 
             displayBoard();
 
             if (turn == 'X') {
+
                 System.out.println("Player Turn");
                 playerMove();
 
